@@ -13,10 +13,13 @@ function findCharts(chartBaseDir) {
     .then(files => {
       return Promise.mapSeries(files, filename => {
         const isMbtilesFile = filename.match(/\.mbtiles$/i)
+        const isJsonFile = filename.match(/\.json$/i)
         const file = path.resolve(chartBaseDir, filename)
         const isDirectory = fs.statSync(file).isDirectory()
         if (isMbtilesFile) {
           return openMbtilesFile(file, filename)
+        } else if (isJsonFile) {
+          return openJsonFile(file)
         } else if (isDirectory) {
           return directoryToMapInfo(file, filename)
         } else {
@@ -29,6 +32,17 @@ function findCharts(chartBaseDir) {
       result[chart.identifier] = chart
       return result
     }, {}))
+}
+
+function openJsonFile(file) {
+  return fs.readFileAsync(file, 'utf8').then(function(contents) {
+    return JSON.parse(contents);
+  }).catch(SyntaxError, function(e) {
+      console.log("File had syntax error", e);
+  //Catch any other error
+  }).catch(function(e) {
+      console.log("Error reading file", e);
+  });
 }
 
 function openMbtilesFile(file, filename) {
