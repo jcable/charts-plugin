@@ -19,7 +19,7 @@ function findCharts(chartBaseDir) {
         if (isMbtilesFile) {
           return openMbtilesFile(file, filename)
         } else if (isJsonFile) {
-          return openJsonFile(file)
+          return openJsonFile(file, filename)
         } else if (isDirectory) {
           return directoryToMapInfo(file, filename)
         } else {
@@ -36,7 +36,7 @@ function findCharts(chartBaseDir) {
 
 function openJsonFile(file) {
   return fs.readFileAsync(file, 'utf8').then(function(contents) {
-    return JSON.parse(contents);
+    return {path.parse(filename).name: JSON.parse(contents)};
   }).catch(SyntaxError, function(e) {
       console.log("File had syntax error", e);
   //Catch any other error
