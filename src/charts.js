@@ -75,7 +75,7 @@ function openMbtilesFile(file, filename) {
       minzoom: metadata.minzoom,
       maxzoom: metadata.maxzoom,
       format: metadata.format,
-      type: 'tilelayer',
+      type: metadata.type || 'baselayer',
       tilemapUrl: `${apiRoutePrefix}/charts/${identifier}/{z}/{x}/{y}`,
       scale: metadata.scale || '250000'
     }
