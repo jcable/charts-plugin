@@ -36,7 +36,10 @@ function findCharts(chartBaseDir) {
 
 function openJsonFile(file) {
   return fs.readFileAsync(file, 'utf8').then(function(contents) {
-    return {path.parse(filename).name: JSON.parse(contents)};
+    const p = path.parse(filename).name;
+    let r = {};
+    r[p] = JSON.parse(contents);
+    return r;
   }).catch(SyntaxError, function(e) {
       console.log("File had syntax error", e);
   //Catch any other error
